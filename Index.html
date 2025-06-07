@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <title>🕸️ Spider.css Playground</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      height: 100%;
+      overflow: hidden;
+      font-family: sans-serif;
+    }
+
+    #container {
+      display: flex;
+      height: 100vh;
+    }
+
+    #editor {
+      width: 50%;
+      height: 100%;
+    }
+
+    #preview {
+      width: 50%;
+      height: 100%;
+      border: none;
+    }
+  </style>
+  <!-- Monaco Editor CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs/loader.min.js"></script>
+</head>
+
+<body>
+  <div id="container">
+    <div id="editor"></div>
+    <iframe id="preview"></iframe>
+  </div>
+
+  <script>
+    require.config({paths: {'vs': 'https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.34.1/min/vs'}});
+    require(['vs/editor/editor.main'], function () {
+      const editor = monaco.editor.create(document.getElementById('editor'), {
+        value: `<!-- 🕸️ Spider.css Live Playground -->
+<div class="btn primary">Download Now</div>
+<div class="card shadow p-3 m-3">
+  <h2 class="text-center">Spider.css 2.0.0</h2>
+  <p>This is a live demo using Spider.css classes.</p>
+</div>`,
+        language: 'html',
+        theme: 'vs-dark',
+        automaticLayout: true,
+      });
+
+      const preview = document.getElementById('preview');
+
+      function updatePreview() {
+        const code = editor.getValue();
+        const output = `
+          <html>
+            <head>
+              <link rel="stylesheet" href="https://pjdeveloper896.github.io/Spider.css/dist/Spider.css">
+            </head>
+            <body style="margin:0;padding:20px;">
+              ${code}
+            </body>
+          </html>
+        `;
+        preview.srcdoc = output;
+      }
+
+      editor.onDidChangeModelContent(updatePreview);
+      updatePreview();
+    });
+  </script>
+</body>
+
+</html>
